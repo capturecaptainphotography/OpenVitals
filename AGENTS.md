@@ -45,7 +45,7 @@ These features already show the intended direction.
 Beyond the metric screens, the app now carries a few subsystems that are not metric features and do not follow the period-detail pattern:
 
 - `features/devicesync/` — phone-to-phone Health Connect sync over Bluetooth Classic RFCOMM.
-- `domain/` — the `:domain` Gradle module: the app-local pure code (`domain/model`, `domain/insights`, `domain/preferences`, `domain/cycle`, `domain/dashboard`, `domain/report`, `domain/medical`, and `core/period`, `core/fit`, `core/geo`, `core/stats`, `core/export`, `core/privacy`), with the same package names as the app. It exists so its lint and tests run beside the app's. Nothing in it may import `data/`, `healthconnect/`, `features/` or `ui/`; `domain/query` and `domain/usecase` stay in `:app` because they do.
+- `domain/` — the `:domain` Gradle module: the app-local pure code (`domain/model`, `domain/insights`, `domain/preferences`, `domain/cycle`, `domain/dashboard`, `domain/report`, `domain/medical`, `domain/workout`, and `core/period`, `core/fit`, `core/geo`, `core/stats`, `core/export`, `core/privacy`), with the same package names as the app. It exists so its lint and tests run beside the app's. Nothing in it may import `data/`, `healthconnect/`, `features/` or `ui/`; `domain/query` and `domain/usecase` stay in `:app` because they do.
 - `data/migration/` — a one-time Flutter-to-Kotlin data importer that runs in two phases from `OpenVitalsApp.onCreate()`. Its ordering around `super.onCreate()` is load-bearing; read the architecture doc before touching startup.
 
 The following areas are still transitional and should not be copied as the default pattern:

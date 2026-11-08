@@ -206,6 +206,18 @@ private fun WorkoutPlanStepRow(
         verticalArrangement = Arrangement.spacedBy(Spacing.sm),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            val animation = if (step.kind == WorkoutPlanStepKind.ACTIVE) {
+                programmeExerciseFor(segmentType = step.segmentType, description = step.descriptionText)
+            } else {
+                null
+            }
+            if (animation != null) {
+                ExerciseAnimation(
+                    exercise = animation,
+                    contentDescription = stepLabel(step),
+                    modifier = Modifier.padding(end = Spacing.sm),
+                )
+            }
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = when (step.kind) {

@@ -33,7 +33,7 @@ Most importantly, body and entry/session browsing now live in metric-owned detai
 | `core/` | app-wide primitives: `presentation`, `performance`, `diagnostics` in `:app`; `period`, `stats`, `geo`, `fit`, `export` (share staging), `privacy` (masking text that leaves the app) in `:domain` |
 | `data/` | `local` (Room), `repository` (feature-facing repositories + `contract` interfaces), `sync` (history/backfill services), `migration` (one-time Flutter import) |
 | `di/` | `AppModule`, `RepositoryModule`, `PreferencesModule`, `RemindersModule` |
-| `domain/` | pure code: `model`, `insights`, `preferences`, `cycle`, `dashboard` (the aggregator), `report` (report roll-ups), `medical` (FHIR parsing, id repair, source grouping, the patient check, record summaries, the export bundle) in `:domain`; `query` and `usecase`, which reach into the repositories, in `:app` |
+| `domain/` | pure code: `model`, `insights`, `preferences`, `cycle`, `dashboard` (the aggregator), `report` (report roll-ups), `medical` (FHIR parsing, id repair, source grouping, the patient check, record summaries, the export bundle), `workout` (the 52-week progressive training programme) in `:domain`; `query` and `usecase`, which reach into the repositories, in `:app` |
 | `features/` | one package per user-facing feature area |
 | `healthconnect/` | the Health Connect integration boundary: manager, per-area readers, permission/UX services |
 | `navigation/` | routes and graph registration |
@@ -327,11 +327,13 @@ Interpretation lives with the consumer: [`features/manualentry/activity/routeimp
 
 ## Module `:domain`
 
-The app-local code that nothing in the rest of the phone app sits below, in `domain/`: the packages `domain/model`, `domain/insights`, `domain/preferences`, `domain/cycle`, `domain/dashboard`, `domain/report` and `domain/medical`, and the primitives `core/period`, `core/fit`, `core/geo`, `core/stats`, `core/export` and `core/privacy`. Package names are unchanged, so an import does not say which module a class is in. `:app` depends on it.
+The app-local code that nothing in the rest of the phone app sits below, in `domain/`: the packages `domain/model`, `domain/insights`, `domain/preferences`, `domain/cycle`, `domain/dashboard`, `domain/report`, `domain/medical` and `domain/workout`, and the primitives `core/period`, `core/fit`, `core/geo`, `core/stats`, `core/export` and `core/privacy`. Package names are unchanged, so an import does not say which module a class is in. `:app` depends on it.
 
 It is an Android library, not plain Kotlin: a few files use Health Connect record constants (`ExerciseTypeTraits`, `PlannedExerciseSteps`, the activity splits) and the platform's locale data (`SystemUnitSystemProvider`, `AppLanguage`), and Android lint then still checks it. It has the app's build types (`ci`, `nightly`), so the app's `ci` variant takes the module's `ci` variant and the module's tests and lint run on that one compile. Nothing in it is injected: it holds no Hilt module, and its classes are constructed by the app's repositories and the app's `di/` modules.
 
 Its test fixtures (`testFixtures`) hold the FHIR, C-CDA and SMART Health Card fixtures that both its own tests and the app's import tests use, and the privacy sentinels (`PrivacySentinels`) that tests of crash drafts, logs and reports seed and look for, with the FHIR sample files under `domain/src/testFixtures/resources/fhir/`. Its tests and lint are part of the phone gate (`verifyCiUnitTest` depends on `:domain:testCiUnitTest`, `verifyCiLint` on `:domain:lintCi`), its lockfile is `domain/gradle.lockfile`, and the ratchet tests and the `runBlocking` allow-list cover its files under the same package-relative paths as the app's.
+
+`domain/workout` builds the year-long progressive training programme — beginner, intermediate and advanced levels, four-week blocks with a deload, sessions per week that grow twice, and a weekly minute cap — as pure data and arithmetic, testable without Android. No screen offers it yet: the plan list still shows only the plans that exist in Health Connect.
 
 The module exists for the build: the app's lint and tests no longer cover these lines, and a change elsewhere leaves this module's compile, lint and test results in the build cache. What does not belong here: anything with an inbound dependency from `data/`, `healthconnect/` or `features/` (`domain/query` and `domain/usecase` stay in `:app` for that reason), resources, and Hilt wiring. `ArchitectureDocTest` fails when a Gradle module is missing from this document.
 

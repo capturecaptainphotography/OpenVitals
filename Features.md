@@ -27,6 +27,7 @@ For the route, widget, package, and documentation mapping, see [`docs/features/f
 - View sleep, beverages, hydration, caffeine, nutrition, body, vitals, mindfulness, cycle, and cardio load widgets.
 - Reorder or remove dashboard widgets through the dashboard customization flow.
 - Open the relevant metric detail screen from supported widgets.
+- Read a rate-limit banner instead of a toast when Health Connect refuses a read: it counts down and reloads only the tiles that were refused, while the others keep their data and their place, each refusal waiting longer than the last.
 
 ### Achievements
 
@@ -212,14 +213,19 @@ For the route, widget, package, and documentation mapping, see [`docs/features/f
 - View the recorded cycle day and the period start it counts from.
 - View the current phase (menstrual, follicular, ovulatory transition, luteal) or the reason it cannot be placed, labelled recorded or estimated.
 - View the estimated next period window, where today sits in it, and why there is no estimate yet.
+- Count the estimate from a recorded ovulation sign — the first positive LH test, a confirmed temperature rise, or a mucus peak — with an interval learned from earlier cycles that carried the same sign, and a line naming what it counts from. Signs that disagree fall back to the cycle-history estimate and say so; the estimate never marks fertile or infertile days.
 - View a phase tip or a sourced cycle fact that changes daily.
 - View the count, mean, and range of recorded cycles.
 - View cycle history bars against a 21 to 35 day reference band, with a per-cycle detail sheet.
 - View a thermal chart for the current cycle with a coverline when a temperature shift is confirmed.
+- View the night skin temperature a watch or ring writes beside the morning temperature readings, each series with its own chip, colour and axis, and from fifteen nights on a rise found afterwards: three nights in a row at least 0.2 °C above five of the six nights before. A line under the chart says what was found, or that the nights are too few, too gappy or the signal too weak to judge. The rise feeds no estimate.
+- View a skin-temperature card explaining what the signal can and cannot say, with the numbers and studies behind a toggle and a note when a declared hormonal method or PCOS changes the picture. Information, not birth control or fertility prediction.
+- View overnight resting pulse, HRV and breathing rate by cycle day, one device per signal and each on its own scale, with the reasons behind a "Why this is shown" button. Information only: it changes no estimate.
 - View how often each symptom was logged in each phase.
 - Include a cycle section in the PDF health report: cycle-day chart, length statistics, bleeding and pain counts, a table per cycle, symptom counts, and notes.
 - Export the cycle journal to a JSON file and import one back, merging by the newer edit per day.
 - View today's logged observations (bleeding, pain, mood, energy, symptoms, note).
+- View the day of the contraceptive pack when pill tracking is on, with one tap to mark today's pill as taken or to undo it.
 - Add a cycle home screen widget that shows the cycle day, the estimated range, and whether today is logged, with a button that hides them.
 
 ### Medical Records
@@ -380,7 +386,7 @@ For the route, widget, package, and documentation mapping, see [`docs/features/f
 
 ### CSV Import
 
-- Import body measurements and vitals from a CSV file through a five-step wizard: choose a file, map the columns, confirm, import, read the result.
+- Import body measurements, vitals, and the app's own workout export from a CSV file through a five-step wizard: choose a file, map the columns, confirm, import, read the result.
 - Choose the column separator and whether the first row holds column names, both detected and both overridable.
 - Map each column to nothing, to the date and time, or to one of the supported measurements.
 - Import weight, body fat, lean body mass, bone mass, body water, height, basal metabolic rate, heart rate, resting heart rate, heart rate variability, blood oxygen, respiratory rate, body temperature, basal body temperature, blood glucose, VO2 max, and blood pressure.
@@ -392,7 +398,8 @@ For the route, widget, package, and documentation mapping, see [`docs/features/f
 - Reject a row for an unusable timestamp or too few columns, and reject a single value for an unusable number or an implausible value, keeping the rest of the row.
 - Read the result as written, already present, and rejected counts, with rejections grouped by reason.
 - Copy or save the import report: the parsing settings and the column mapping actually used, and each rejected row's number, column and reason, with the shape of a cell that could not be read and never its text.
-- Interval records such as sleep and workouts are deliberately not supported.
+- Recognise the app's own workout CSV export and import each row as a workout: editable, deletable, and replaced rather than duplicated on a re-import. A hand-made file with the same headers imports the same way.
+- Sleep remains deliberately unsupported.
 - Re-importing writes no duplicates; a corrected value replaces the record at the same instant.
 - No rollback/delete flow is provided for a CSV import after records are written.
 
@@ -491,6 +498,8 @@ For the route, widget, package, and documentation mapping, see [`docs/features/f
 - Set an optional age band that picks the estimate's variability prior.
 - Turn on local cycle reminders: a daily check-in, an upcoming-window reminder with a lead of 1 to 3 days, and a late-cycle reminder with a grace of 0 to 7 days.
 - Choose what a cycle reminder shows: concealed, descriptive, or a custom title and message.
+- Declare a hormonal method — pill, hormonal IUD, implant, ring or patch, injection, or another — with an optional stop date. It travels with the journal export and the phone-to-phone sync, and today changes only the skin-temperature card.
+- Track the contraceptive pill: days taking and days pausing, the first day of a pack, and a daily reminder on taking days. Off by default.
 
 ### Data Import Settings
 
@@ -499,7 +508,7 @@ For the route, widget, package, and documentation mapping, see [`docs/features/f
 - Select Apple Health export files.
 - Import one GPX, KML, KMZ, TCX, or FIT activity file for review before saving.
 - Bulk import multiple route files directly into Health Connect.
-- Open the CSV importer and map a CSV file's columns to body measurements and vitals.
+- Open the CSV importer and map a CSV file's columns to body measurements and vitals, or import the app's own workout export without a mapping.
 - Monitor import progress and read import reports.
 
 ### Sync With Another Phone Settings

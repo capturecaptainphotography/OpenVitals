@@ -20,6 +20,8 @@ The builder (`WorkoutPlanBuilderScreen`) edits one plan:
 - On load the builder folds such runs back into one row: consecutive copies of one exercise, each followed by the same rest (or by nothing), read as one row with that many sets. The scan is greedy from the left, so a plan from another app with `A R A R A` (no rest after the last set) reads as "A ×2 with rest" followed by "A ×1", and writes back unchanged. A rest right after an exercise is always that exercise's set rest, so "Add rest" rows survive only where no exercise precedes them (block start, after another rest, after a read-only step).
 - Steps the builder cannot express (distance goals, calorie goals, manual completion, unknown goals, usually from other apps) are shown read-only and written back unchanged, so editing a foreign plan never drops part of it. Of the performance targets, only the weight target is edited (the Weight field); pace, power and heart-rate targets are shown under the step and written back as they came.
 
+A step whose exercise has a clip shows a looping stick-figure demonstration beside it, drawn by `scripts/generate-exercise-animations.py`; Android 9 and newer animate it, older versions show the first frame, and the step's own name remains the screen reader's description.
+
 Saving writes a `PlannedExerciseSessionRecord`. Updating an existing plan is an in-place update, so the record id stays the same. Sessions that completed the plan keep their link, and a failed save leaves the old plan as it was.
 
 ## Plan List
@@ -78,3 +80,4 @@ Every completion goal Health Connect defines (reps, duration, distance, distance
 - Weight is typed in kg in the builder and the form; the session detail shows it in the preferred unit. A pound input is not offered yet.
 - The plan list's "steps" count is the stored (unrolled) list, so "3 sets" counts as six steps. The review form accepts at most 99 set rows, which rounds × sets can exceed; the save then reports an invalid value rather than warning in the builder.
 - The entry form's rest field is seconds only; the seconds/minutes choice exists in the builder.
+- A year-long progressive programme (beginner, medium, hard, in four-week blocks with a deload) is built by `domain/workout` and is not yet reachable from a screen, so no generated session can be started from the plan list. Wiring it means turning a programme week into the plans the builder already writes.
