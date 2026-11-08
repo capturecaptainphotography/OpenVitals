@@ -2,7 +2,7 @@
 
 These docs describe how the app is built and how new work should fit into the current architecture.
 
-- [Architecture](architecture.md): current single-module architecture, feature boundaries, period detail pattern, and data-access rules.
+- [Architecture](architecture.md): current two-module architecture (`:app` and `:domain`), feature boundaries, period detail pattern, and data-access rules.
 - [Development](development.md): local build, verification tasks, the translation gate and its current state, CI, and release.
 - [Feature playbook](feature-playbook.md): checklist for adding or extending a metric feature.
 - [Translations](translations.md): Codeberg Translate setup, translation policy, and validation checks.

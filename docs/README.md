@@ -6,7 +6,7 @@ Start here when you need to understand the app, a feature, or the implementation
 
 - [App guide](app/README.md): install, getting started, Health Connect, permissions, privacy, FAQ, editions, screenshots, and support.
 - [How-to guides](how-to/README.md): concrete workflows that need step-by-step instructions.
-- [Release notes](releases/2.5.0.md): latest user-facing release summary. Full history: [CHANGELOG.md](../CHANGELOG.md).
+- [Release notes](releases/2.16.0.md): latest user-facing release summary. Full history: [CHANGELOG.md](../CHANGELOG.md).
 
 ## Browse Features
 
@@ -22,7 +22,7 @@ Recently added feature pages:
 ## Contribute And Architecture
 
 - [Engineering guide](engineering/README.md): architecture, development setup, feature playbook, code analysis, and test parity.
-- [Architecture](engineering/architecture.md): current single-module architecture, feature boundaries, period detail pattern, and data-access rules.
+- [Architecture](engineering/architecture.md): current two-module architecture (`:app` and `:domain`), feature boundaries, period detail pattern, and data-access rules.
 - [Feature playbook](engineering/feature-playbook.md): checklist for adding or extending a metric feature.
 - [Translations](engineering/translations.md): translate OpenVitals in your language, Codeberg Translate setup, shipping policy, and validation checks.
 
